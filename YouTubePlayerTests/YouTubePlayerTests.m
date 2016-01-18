@@ -7,8 +7,15 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "MasterTableViewController.h"
+#import "SongData.h"
+#import "SongSearchApiManager.h"
 
-@interface YouTubePlayerTests : XCTestCase
+
+
+@interface YouTubePlayerTests : XCTestCase <SongSearchApiManagerDelegate>
+
+@property (strong, nonatomic) XCTestExpectation *expectation;
 
 @end
 
@@ -24,15 +31,55 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+
+
+-(void)testIntialStateOfVarsAfterViewDidLoad
+{
+    SongData * sd = [[SongData alloc] init];
+    
+    XCTAssert((sd.chords == nil) , @"Chords variable not initialised correctly");
+    XCTAssertEqual(sd.chords, nil, @"Chords variable not initialised correctly");
+    XCTAssertNil(sd.chords, @"Chords variable not initialised correctly");
+    
+   // XCTAssertNotEqual(sd.chords, nil, @"Chords variable not initialised correctly");
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
+
+// -----------------------------------------------------------------------------------------------------
+-(void)testSongSearchCall
+{
+    self.expectation = [self expectationWithDescription:@"Expect Song Data to be returned"];
+    
+    SongSearchApiManager * client = [SongSearchApiManager sharedSongSearchApiManager];
+    client.delegate = self;
+    
+    [client getSongDataWithSearchCriteria:@"online"]; // Use the newtwork here
+    
+    //[expectation fulfill];   //
+
+    
+    // Wait for the Semaphore to be released
+    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error)
+    {
+        if (error)
+        {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    
+}
+-(void)SongSearchApiManager:(SongSearchApiManager *)client didRecieveSongSearchDataOk:(NSDictionary *)searchResultsJson
+{
+    [self.expectation fulfill];
+}
+// -----------------------------------------------------------------------------------------------------
+
+
+-(void)testPerformance
+{
     [self measureBlock:^{
-        // Put the code you want to measure the time of here.
+       // [self testSongSearchCall];
+        
     }];
 }
 

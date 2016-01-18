@@ -33,4 +33,4 @@ SPEC CHECKSUMS:
   MGSwipeTableCell: a51fa670c01f0aa048f12af040acebf315223137
   youtube-ios-player-helper: 84b1485ebb4b7c6b619c6e05edcb55186723a7c6
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.39.0

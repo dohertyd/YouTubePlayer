@@ -48,6 +48,36 @@ static NSString * const songSearchServerUrlString = @"https://api.myjson.com/bin
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     // parameters[@"SearchCriteria"] = searchCriteria;
+    NSError *error = nil;
+    
+    // Just get the json locally rather than over the network for DEMO PURPOSES
+    if ( [searchCriteria isEqualToString:@"offline"])
+    {
+        NSString *jsonFile = [[NSBundle mainBundle] pathForResource:@"songs" ofType:@"json"];
+        
+        NSData *jsonData = [NSData dataWithContentsOfFile:jsonFile options:kNilOptions error:&error ];
+        
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
+        
+        //NSLog(@"Returned JSON is = >%@", json );         //NSData *jsonData = [NSData dataWith
+        
+        if (json)
+        {
+           [self.delegate SongSearchApiManager:self didRecieveSongSearchDataOk:(NSDictionary *)json];
+        }
+        else
+        {
+            if ([self.delegate respondsToSelector:@selector(SongSearchApiManager:didFailToRecieveSongSearchData:withTask:)])
+            {
+                [self.delegate SongSearchApiManager:self didFailToRecieveSongSearchData:nil withTask:nil];
+            }
+        }
+        
+        return;
+    }
+    
+    
+    
     
     [self GET:@"" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject)
     {

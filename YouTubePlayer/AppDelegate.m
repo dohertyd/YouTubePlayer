@@ -23,6 +23,9 @@
     UISplitViewController * svc = (UISplitViewController *)self.window.rootViewController;
     svc.delegate = self;
     
+    //self.window.backgroundColor = [UIColor blueColor];
+    self.window.layer.backgroundColor = [[UIColor blackColor] CGColor];
+    
     if ( [ UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         svc.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
@@ -72,7 +75,6 @@
                 [ (UINavigationController * )primaryViewController setNavigationBarHidden:NO animated:NO ];
                 return NO;
             }
-            
         }
         else // ( dvc.songData == nil) // No selection Made
         {

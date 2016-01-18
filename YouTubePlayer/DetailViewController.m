@@ -48,6 +48,32 @@ typedef NS_ENUM(NSInteger, VideoPlayerState)
     
     [self.navigationController.navigationBar setBarTintColor:UICOLORFROMRGB(0x1A1A1A)];
     
+    
+    
+    
+    //    UIButton *customButton = nil;
+    //    UIImage  *buttonImage = nil;
+    //    UIImage  *pressedButtonImage = nil;
+    //
+    //    buttonImage = [UIImage imageNamed:@"button_image"];
+    //    pressedButtonImage = [UIImage imageNamed:@"button_pressed_image"];
+    //    customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    [customButton setImage : buttonImage forState : UIControlStateNormal];
+    //    [customButton setImage : pressedButtonImage forState : UIControlStateHighlighted];
+    //    [customButton addTarget : self action : @selector(buttonTapped) forControlEvents : UIControlEventTouchUpInside];
+    //    customButton.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+    //
+    //    UIView *container = [[UIView alloc] initWithFrame:(CGRect){0.0, 0.0, buttonImage.size.width, buttonImage.size.height}];
+    //    container.backgroundColor = [UIColor clearColor];
+    //    [container addSubview:customButton];
+    //
+    //    UIBarButtonItem *customToolbarButton = [[UIBarButtonItem alloc] initWithCustomView:container];
+    //
+    //    // add the custom button to the toolbar
+    //    self.navigationBar.topItem.rightBarButtonItem = self.addButtonItem;
+    
+    
+    // NEW could have used a UiButton here as above and have features easily, placing it in a container view before adding to UiBarButtonItem
     //
     // Setup a Play/Pause button in the RHS of the Nav bar
     //
@@ -59,6 +85,7 @@ typedef NS_ENUM(NSInteger, VideoPlayerState)
     [[self navigationItem] setRightBarButtonItem:barButton];
     self.videoPlayerState = VPSTOPPED;
     
+    // NEW - could use appearance proxy with traits here
     //
     // Adjust Nav bar title text attributes
     //

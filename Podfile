@@ -11,6 +11,8 @@ end
 
 target 'YouTubePlayerTests' do
 
+pod 'AFNetworking', '2.6.0'
+
 end
 
 target 'YouTubePlayerUITests' do

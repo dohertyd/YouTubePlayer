@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, NetworkState)
 
     self.networkState = NWUNKNOWN;
     
-    self.tableView.delegate = self;
+    //self.tableView.delegate = self;
     
     [self.navigationController.navigationBar setBarTintColor:UICOLORFROMRGB(0x1A1A1A)];
 
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, NetworkState)
     //
     // Make the AFNetworking call to get the SongSearch results
     //
-    [self.songSearchApiManager getSongDataWithSearchCriteria:@""];
+    [self.songSearchApiManager getSongDataWithSearchCriteria:@"offline"];
 
     //
     // Keep an eye on the network, handle network going up and down
@@ -189,6 +189,8 @@ typedef NS_ENUM(NSInteger, NetworkState)
     
     NSString * videoThunbNailImageUrlString = [NSString stringWithFormat:@"http://img.youtube.com/vi/%@/mqdefault.jpg", sd.youtube_id];
     
+    NSLog(@"URL = >%@<", videoThunbNailImageUrlString);
+    
     //
     // This AFNetworking Category caches to disk
     //
@@ -196,7 +198,20 @@ typedef NS_ENUM(NSInteger, NetworkState)
                                                                      cachePolicy:NSURLRequestReturnCacheDataElseLoad
                                                                  timeoutInterval:60];
     
-    [cell.songThumbnailImageView setImageWithURLRequest:urlRequest placeholderImage:[UIImage imageNamed:@"ThumbnailPlaceholder.png"] success:nil failure:nil];
+   // [cell.songThumbnailImageView setImageWithURLRequest:urlRequest placeholderImage:[UIImage imageNamed:@"ThumbnailPlaceholder.png"] success:nil failure:nil];
+    
+    
+    // NEW
+    [cell.songThumbnailImageView setContentMode:UIViewContentModeScaleAspectFit];
+    
+    // NEW seems to work ok here
+    __weak SongSearchResultTableViewCell * weakCell = cell;
+    [cell.songThumbnailImageView setImageWithURLRequest:urlRequest placeholderImage:[UIImage imageNamed:@"ThumbnailPlaceholder.png"] success:^(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image){
+        weakCell.songThumbnailImageView.image = image;
+        [weakCell setNeedsLayout];
+    }failure:nil ];
+    
+    
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //
@@ -204,6 +219,7 @@ typedef NS_ENUM(NSInteger, NetworkState)
     //
     cell.songThumbnailImageView.layer.borderColor = [UIColor darkGrayColor].CGColor;
     cell.songThumbnailImageView.layer.borderWidth = 1.0;
+
     
     //
     // Configure the favourite button with an icon
